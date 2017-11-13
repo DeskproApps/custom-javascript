@@ -51,14 +51,14 @@
     "externalApis": []
   },
   "dependencies": {
-    "@deskpro/apps-sdk-react": "^0.1.6",
+    "@deskpro/apps-sdk-react": "^0.1.8",
     "@deskpro/react-components": "^1.1.2",
     "handlebars": "^4.0.11",
     "taboverride": "^4.0.3"
   },
   "devDependencies": {
     "@deskpro/apps-dpat": "^0.9.1",
-    "@deskpro/apps-sdk-core": "^1.0.0-beta.22",
+    "@deskpro/apps-sdk-core": "^1.0.0-beta.24",
     "babel-eslint": "^8.0.2",
     "eslint": "^4.10.0",
     "eslint-config-airbnb": "^16.1.0",
