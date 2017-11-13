@@ -1,6 +1,6 @@
 {
   "name": "@deskproapps/custom-javascript",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Allows admins to use HTML, JavaScript, and CSS to create custom apps.",
   "main": "lib/main/javascript/index.js",
   "scripts": {
