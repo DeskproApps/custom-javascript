@@ -29,7 +29,7 @@
   "homepage": "https://github.com/deskproapps/custom-javascript",
   "deskpro": {
     "version": "2.1.0",
-    "title": "Custom HTML",
+    "title": "Custom JavaScript",
     "isSingle": true,
     "scope": "agent",
     "storage": [
