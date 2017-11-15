@@ -20,7 +20,8 @@ const PageHelp = () => (
       </Heading>
       <p>
         Edit the HTML template to set the value which gets rendered in the document.
-        The <i>tab</i> and <i>me</i> values may be rendered in the template
+        The <a href="https://deskpro.gitbooks.io/deskpro-apps/apps/tabdata.html" target="_blank">tab data</a> and
+        <a href="https://deskpro.gitbooks.io/deskpro-apps/apps/me.html" target="_blank">me</a> values may be rendered in the template
         using <a href="http://handlebarsjs.com/expressions.html" target="_blank">Handlebars expressions</a>.
       </p>
 
