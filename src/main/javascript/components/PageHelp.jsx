@@ -8,14 +8,14 @@ import { Container, Section, Heading } from '@deskpro/react-components';
 const PageHelp = () => (
   <Container className="no-padding">
     <Section>
-      <Heading size={2}>
+      <Heading size={3}>
         Help
       </Heading>
       <p>
         This app allows admins to use HTML, JavaScript, and CSS to create custom apps.
       </p>
 
-      <Heading size={3}>
+      <Heading size={4}>
         HTML
       </Heading>
       <p>
@@ -25,7 +25,7 @@ const PageHelp = () => (
         using <a href="http://handlebarsjs.com/expressions.html" target="_blank">Handlebars expressions</a>.
       </p>
 
-      <Heading size={3}>
+      <Heading size={4}>
         Assets
       </Heading>
       <p>
@@ -33,14 +33,14 @@ const PageHelp = () => (
         separate lines.
       </p>
 
-      <Heading size={3}>
+      <Heading size={4}>
         CSS
       </Heading>
       <p>
         Styles may be embedded directly in the document using the CSS setting.
       </p>
 
-      <Heading size={3}>
+      <Heading size={4}>
         JavaScript
       </Heading>
       <p>
