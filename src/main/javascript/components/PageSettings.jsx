@@ -64,6 +64,8 @@ class PageSettings extends React.PureComponent {
     return (
       <Form
         name="settings"
+        keepDirtyOnReinitialize
+        destroyOnUnmount={false}
         initialValues={Object.assign({}, defaultSettings, storage.app.settings)}
         onSubmit={storage.onSubmitApp(this.handleSubmit)}
       >
