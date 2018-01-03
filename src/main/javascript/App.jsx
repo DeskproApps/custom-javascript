@@ -36,6 +36,8 @@ export default class App extends React.PureComponent {
   componentDidMount() {
     const { storage, route, me } = this.props;
 
+    route.on('to', this.handleRouteTo);
+
     if (me.can_admin) {
       const controls = document.querySelector('.dp-heading__controls');
       const settings = document.createElement('i');
@@ -67,9 +69,19 @@ export default class App extends React.PureComponent {
    * Invoked immediately before a component is unmounted
    */
   componentWillUnmount() {
+    const { route } = this.props;
+
+    route.off('to', this.handleRouteTo);
     document.querySelector('.dp-heading__controls .fa-gear').remove();
     document.querySelector('.dp-heading__controls .fa-question-circle').remove();
   }
+
+  /**
+   * Called when the route is changed
+   */
+  handleRouteTo = () => {
+    this.props.dpapp.ui.expand();
+  };
 
   /**
    * @returns {XML}
