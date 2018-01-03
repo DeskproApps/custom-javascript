@@ -34,7 +34,7 @@ export default class App extends React.PureComponent {
    * Invoked immediately after a component is mounted
    */
   componentDidMount() {
-    const { storage, route, me } = this.props;
+    const { dpapp, storage, route, me } = this.props;
 
     const title = document.querySelector('.deskpro-toolbar__title');
     if (storage.app.settings === undefined) {
