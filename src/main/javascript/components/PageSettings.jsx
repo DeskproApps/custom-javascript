@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import tabOverride from 'taboverride';
 import { LinkButton, sdkConnect } from '@deskpro/apps-sdk-react';
 import { Container, Heading, DrawerList, Drawer } from '@deskpro/react-components';
-import { Form, Textarea, Button } from '@deskpro/react-components/lib/bindings/redux-form';
+import { Form, Input, Textarea, Button } from '@deskpro/react-components/lib/bindings/redux-form';
 
 /* eslint-disable */
 const defaultSettings = {
@@ -51,7 +51,8 @@ class PageSettings extends React.PureComponent {
   /**
    * Called when the form is submitted
    */
-  handleSubmit = () => {
+  handleSubmit = (values) => {
+    document.querySelector('.deskpro-toolbar__title').innerHTML = values.title;
     this.props.route.to('home');
   };
 
@@ -60,6 +61,13 @@ class PageSettings extends React.PureComponent {
    */
   render() {
     const { storage } = this.props;
+
+    if (storage.app.settings === undefined) {
+      storage.app.settings = {};
+    }
+    if (!storage.app.settings.title) {
+      storage.app.settings.title = dpapp.manifest.title;
+    }
 
     return (
       <Form
@@ -71,6 +79,17 @@ class PageSettings extends React.PureComponent {
       >
         <DrawerList>
           <Drawer>
+            <Heading>App</Heading>
+            <span>
+              The title displayed in the toolbar.
+            </span>
+            <Input
+              label="Title"
+              id="title"
+              name="title"
+            />
+          </Drawer>
+          <Drawer opened={false}>
             <Heading>HTML</Heading>
             <span>
               The HTML rendered into the document.
