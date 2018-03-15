@@ -29,7 +29,12 @@ class PageSettings extends React.PureComponent {
      * Instance of sdk storage.
      * @see https://deskpro.gitbooks.io/deskpro-apps/api/props/storage.html
      */
-    storage: PropTypes.object.isRequired
+    storage: PropTypes.object.isRequired,
+
+    /**
+     * Instance of sdk-core.
+     */
+    dpapp:   PropTypes.object.isRequired
   };
 
   /**
@@ -60,9 +65,9 @@ class PageSettings extends React.PureComponent {
    * @returns {XML}
    */
   render() {
-    const { storage } = this.props;
+    const { storage, dpapp } = this.props;
 
-    if (storage.app.settings === undefined) {
+    if (!storage.app.settings) {
       storage.app.settings = {};
     }
     if (!storage.app.settings.title) {
