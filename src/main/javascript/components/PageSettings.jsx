@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import tabOverride from 'taboverride';
 import { LinkButton, sdkConnect } from '@deskpro/apps-sdk-react';
-import { Container, Heading, DrawerList, Drawer } from '@deskpro/react-components';
-import { Form, Input, Textarea, Button } from '@deskpro/react-components/lib/bindings/redux-form';
+import { Container, Heading, DrawerList, Drawer, Button } from '@deskpro/react-components';
+import { Form, Input, Textarea } from '@deskpro/redux-components';
 
 /* eslint-disable */
 const defaultSettings = {
