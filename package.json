@@ -63,7 +63,7 @@
   "devDependencies": {
     "@deskpro/apps-dpat": "^0.10.0",
     "@deskpro/apps-sdk-core": "^1.0.0-beta.28",
-    "@deskpro/apps-sdk-react": "0.2.11",
+    "@deskpro/apps-sdk-react": "0.2.12",
     "babel-eslint": "^8.0.2",
     "eslint": "^4.10.0",
     "eslint-config-airbnb": "^16.1.0",
