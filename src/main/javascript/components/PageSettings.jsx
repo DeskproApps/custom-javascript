@@ -67,11 +67,9 @@ class PageSettings extends React.PureComponent {
   render() {
     const { storage, dpapp } = this.props;
 
-    if (!storage.app.settings) {
-      storage.app.settings = {};
-    }
-    if (!storage.app.settings.title) {
-      storage.app.settings.title = dpapp.manifest.title;
+    let settings = storage.app.settings || {};
+    if (!settings.title) {
+      settings.title = dpapp.manifest.title;
     }
 
     return (
@@ -79,7 +77,7 @@ class PageSettings extends React.PureComponent {
         name="settings"
         keepDirtyOnReinitialize
         destroyOnUnmount={false}
-        initialValues={Object.assign({}, defaultSettings, storage.app.settings)}
+        initialValues={Object.assign({}, defaultSettings, settings)}
         onSubmit={storage.onSubmitApp(this.handleSubmit)}
       >
         <DrawerList>
