@@ -2,22 +2,23 @@ const path = require('path');
 const dpat = require('@deskpro/apps-dpat');
 
 module.exports = function (env) {
-  
+
   const PROJECT_ROOT_PATH = env && env.DP_PROJECT_ROOT ? env.DP_PROJECT_ROOT : path.resolve(__dirname, '../../');
   const DEBUG = env && env.NODE_ENV === 'development';
-  
+  const ENVIRONMENT =  env && env.NODE_ENV ? env.NODE_ENV : 'production';
+
   const buildManifest = new dpat.BuildManifest(
     PROJECT_ROOT_PATH,
     { distributionType: 'production', packagingType: 'cdn' }
   );
-  
+
   const resources = dpat.Resources.copyDescriptors(buildManifest, PROJECT_ROOT_PATH);
   const babelOptions = dpat.Babel.resolveOptions(PROJECT_ROOT_PATH, { babelrc: false });
   // the relative path of the assets inside the distribution bundle
   const ASSET_PATH = 'assets';
-  
+
   const extractCssPlugin = new dpat.Webpack.ExtractTextPlugin({ filename: '[name].css', publicPath: `/${ASSET_PATH}/`, allChunks: true });
-  
+
   const configParts = [{}];
   configParts.push({
     devtool: DEBUG ? 'source-map' : false,
@@ -64,22 +65,23 @@ module.exports = function (env) {
     },
     plugins: [
       extractCssPlugin,
-      
+
       new dpat.Webpack.DefinePlugin({
         DEBUG: DEBUG,
-        DPAPP_MANIFEST: JSON.stringify(buildManifest.getContent())
+        DPAPP_MANIFEST: JSON.stringify(buildManifest.getContent()),
+        'process.env.NODE_ENV': JSON.stringify(ENVIRONMENT)
       }),
-      
+
       // for stable builds, in production we replace the default module index with the module's content hashe
       new dpat.Webpack.HashedModuleIdsPlugin(),
       new dpat.Webpack.optimize.UglifyJsPlugin({
         sourceMap: DEBUG,
         compress: { unused: true, dead_code: true, warnings: false }
       }),
-      
+
       // replace a standard webpack chunk hashing with custom (md5) one
       new dpat.Webpack.WebpackChunkHash(),
-      
+
       // vendor libs + extracted manifest
       new dpat.Webpack.optimize.CommonsChunkPlugin({
         name: ['vendor'],
@@ -94,7 +96,7 @@ module.exports = function (env) {
       }),
       // mapping of all source file names to their corresponding output file
       new dpat.Webpack.ManifestPlugin({ fileName: 'asset-manifest.json' }),
-      
+
       new dpat.Webpack.CopyWebpackPlugin(resources, { debug: true, copyUnmodified: true }),
     ],
     resolve: {
@@ -107,6 +109,6 @@ module.exports = function (env) {
     node: { fs: 'empty' },
     bail: true
   });
-  
+
   return Object.assign.apply(Object, configParts)
 };
