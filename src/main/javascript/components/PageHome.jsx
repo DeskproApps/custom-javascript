@@ -57,8 +57,9 @@ class PageHome extends React.PureComponent {
     const { storage, ui } = this.props;
 
     const [scripts, stylesheets] = splitAssets(storage.app.settings.assets);
-    loadStylesheets(stylesheets).done(() => {
-      loadScripts(scripts).done(() => {
+
+    loadStylesheets(stylesheets).then(() => {
+      loadScripts(scripts).then(() => {
         try {
           const context = this.getTemplateContext();
           const templateCSS = Handlebars.compile(storage.app.settings.css || '');
@@ -87,6 +88,17 @@ class PageHome extends React.PureComponent {
   componentDidUpdate() {
     const { storage, ui } = this.props;
 
+    if (this.scriptTag) {
+      this.scriptTag.remove()
+    }
+
+    // make dpapp visible to the script
+    if (window) {
+      window.dpapp = this.props.dpapp;
+      window.getTabData = this.getTabData;
+      window.getMe = this.getMe;
+    }
+
     this.scriptTag = document.createElement('script');
     this.scriptTag.setAttribute('type', 'text/javascript');
     this.appendHead(this.scriptTag);
@@ -108,6 +120,28 @@ class PageHome extends React.PureComponent {
   }
 
   /**
+   * Returns a copy of the data loaded in the container tab.
+   * Exposed as method on the global window object
+   *
+   * @returns {object}
+   */
+  getTabData = () =>
+  {
+    return JSON.parse(JSON.stringify(this.props.tabData));
+  };
+
+  /**
+   * Returns a copy of the data representation of the current authenticated user.
+   * Exposed as method on the global window object
+   *
+   * @returns {object}
+   */
+  getMe = () =>
+  {
+    return JSON.parse(JSON.stringify(this.props.me));
+  };
+
+  /**
    * Appends the given element to the document head
    *
    * @param {HTMLElement} element
@@ -124,8 +158,9 @@ class PageHome extends React.PureComponent {
    */
   getTemplateContext = () => {
     return Object.assign({}, {
-      tab: this.props.tabData,
-      me: this.props.me
+      tab: this.getTabData(),
+      me: this.getMe(),
+      storage: JSON.parse(JSON.stringify(this.props.storage))
     });
   };
 
