@@ -1,32 +1,60 @@
-/**
- * @param {string} href
- * @returns {*}
- */
-const getStylesheet = (href) => {
-  const $d = $.Deferred();
-  const $link = $('<link/>', {
-    href: href,
-    rel: 'stylesheet',
-    type: 'text/css'
-  }).appendTo('head');
-  $d.resolve($link);
+function createLoadStylesheetPromise(url)
+{
+  return function (resolve, reject) {
+    const element = document.createElement('link');
 
-  return $d.promise();
-};
+    element.setAttribute('rel', 'stylesheet');
+    element.setAttribute('type', 'text/css');
+    element.setAttribute('href', url);
+
+    let ready = false;
+
+    element.onload = element.onreadystatechange = function() {
+      // console.log(this.readyState);
+      if (!ready && (!this.readyState || this.readyState === 'complete' ||  this.readyState === 'loaded' )) {
+        ready = true;
+        resolve(url);
+      }
+    };
+    element.onerror = () => reject(url);
+
+    document.head.appendChild(element)
+  };
+}
+
+function createLoadScriptExecutor(url)
+{
+  return (function (resolve, reject) {
+    const element = document.createElement('script');
+    element.async = true;
+    element.src = url;
+    element.type = 'text/javascript';
+
+    element.onerror = function(err) {
+      reject(err, url);
+    };
+
+    let ready = false;
+    element.onload = element.onreadystatechange = function() {
+      // console.log(this.readyState);
+      if (!ready && (!this.readyState || this.readyState === 'complete' ||  this.readyState === 'loaded' )) {
+        ready = true;
+        resolve(url);
+      }
+    };
+
+    const head = document.getElementsByTagName('head')[0];
+    head.appendChild(element)
+  })
+}
 
 /**
  * @param {Array} arr
  * @returns {*}
  */
 export const loadScripts = (arr) => {
-  const _arr = $.map(arr, (scr) => {
-    return $.getScript(scr);
-  });
-  _arr.push($.Deferred((deferred) => {
-    $(deferred.resolve);
-  }));
-
-  return $.when.apply($, _arr);
+  const loaders = arr.map(url => new Promise(createLoadScriptExecutor(url)));
+  return Promise.all(loaders);
 };
 
 /**
@@ -34,14 +62,9 @@ export const loadScripts = (arr) => {
  * @returns {*}
  */
 export const loadStylesheets = (arr) => {
-  const _arr = $.map(arr, (scr) => {
-    return getStylesheet(scr);
-  });
-  _arr.push($.Deferred((deferred) => {
-    $(deferred.resolve);
-  }));
 
-  return $.when.apply($, _arr);
+  const loaders = arr.map(url => new Promise(createLoadStylesheetPromise(url)));
+  return Promise.all(loaders);
 };
 
 /**
