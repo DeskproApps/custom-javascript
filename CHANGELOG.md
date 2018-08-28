@@ -4,6 +4,12 @@ This project is following [Semantic Versioning](http://semver.org)
 
 ## [Unreleased][]
 
+## [0.3.1][] - 2018-08-28
+
+### Changed
+
+ - using the new apps structure and sdks
+
 ## [0.3.0][] - 2018-04-24
 
 ### Added
@@ -27,6 +33,7 @@ This project is following [Semantic Versioning](http://semver.org)
     - upgrade to @deskpro/apps-dpat version 0.10.3
 
 
-[Unreleased]: https://github.com/DeskproApps/custom-javascript/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/DeskproApps/custom-javascript/compare/v0.3.1...HEAD
+[0.3.1]: https://github.com/DeskproApps/custom-javascript/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/DeskproApps/custom-javascript/compare/v0.2.5...v0.3.0
 [0.2.4]: https://github.com/DeskproApps/custom-javascript/tree/v0.2.4

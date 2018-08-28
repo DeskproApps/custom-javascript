@@ -1,22 +1,25 @@
 language: node_js
 node_js:
-- '6'
+  - '8'
 before_install:
-- if [ ! -z "$ARTIFACTS_BUCKET" ] && [ ! -z "ARTIFACTS_KEY" ] && [ ! -z "ARTIFACTS_SECRET" ] ; then export UPLOAD_ARTIFACT=yes ; else echo artifact uploading is disabled; fi
+  - if [ ! -z "$ARTIFACTS_BUCKET" ] && [ ! -z "ARTIFACTS_KEY" ] && [ ! -z "ARTIFACTS_SECRET" ] ; then export UPLOAD_ARTIFACT=yes ; else echo artifact uploading is disabled; fi
 install:
-  - npm install -g npm@5.3.0 && npm -v
-  - npm install --no-optional --no-save --no-update-dependencies
+  - NODE_ENV=dev yarn install
   - if [ ! -z "$UPLOAD_ARTIFACT" ]; then curl -sL https://raw.githubusercontent.com/travis-ci/artifacts/master/install | bash; fi
 script:
-  - npm run package
+  - yarn test && CI=false yarn build
+cache:
+  yarn: true
+  directories:
+    - node_modules
 after_success:
-  - if [ ! -z "$UPLOAD_ARTIFACT" ] ; then artifacts upload --target-paths /${TRAVIS_REPO_SLUG}/${TRAVIS_BUILD_NUMBER}/NODE-${TRAVIS_NODE_VERSION} dist/app.zip ; fi
-  - if [ ! -z "$UPLOAD_ARTIFACT" ] && [ ! -z "$TRAVIS_PULL_REQUEST_SLUG" ] ; then npm run dpat -- travis pr-comment . --s3target /${TRAVIS_REPO_SLUG}/${TRAVIS_BUILD_NUMBER}/NODE-${TRAVIS_NODE_VERSION}; fi
+  - if [ ! -z "$UPLOAD_ARTIFACT" ] ; then artifacts upload --target-paths /${TRAVIS_REPO_SLUG}/${TRAVIS_BUILD_NUMBER}/NODE-${TRAVIS_NODE_VERSION} build/app.zip ; fi
+  - if [ ! -z "$UPLOAD_ARTIFACT" ] && [ ! -z "$TRAVIS_PULL_REQUEST_SLUG" ] ; then echo "commenting on PRs is disabled ( npm run dpat -- travis pr-comment . --s3target /${TRAVIS_REPO_SLUG}/${TRAVIS_BUILD_NUMBER}/NODE-${TRAVIS_NODE_VERSION} )" ; fi
 deploy:
   skip_cleanup: true
   provider: releases
   api_key:
     secure: VB/OU7cAvQlqlTzK63VSlp8YLNMKEAfn23ixXF+3uaYX8RVPCyxhpktGPhddaPKDXGXcLTmiRmkTjC6Nkww0RDo7mNqBAeATLiBKe5nLeMDht1gR1DsVYktl8m+00EQapdTLvjJEf3Gfi0Ivy2vmivX6WEJi6Q6YXsnmH0ZRpNXIvdieIY9xkIeiVqvdNzXdlN+7gF2SFcDPocjehoMZ7852fs5oQ6reaCxKKIOfJvh2G4ke3JrPeRwqAKhR6NDCZQObAlaDTmSN+cR2YUZYR94s+/BNZYZArqfRAxpL//FWgH4RAB1PPHw9UuneogE4BWn1RmPbL8cUdE5bEa7i5W5JwzGDBNgkBqQc8dxUUFo1yN2ZHe0lEY/HkspcWGS//v/9HUzIvc73Pna72z13DjAHv0FxOs5xqbHI8zMJwPsKWxooUc53bFfKf1B2oAUhBH2UqRo6U2b1Rds+U3DvK0I+/9kpMaBxJpk74JnN6D27PHx2mkZSW6azkFv0MYaPRod3+kRBYt2+q8GBL2RDAr30GJh+MkvuvcTU6Crkoim3fjaMx7uo7fww3zKkZ7kPH4vanJpVat/zUD1SbsxabBHxiIATl4opFIp4tAYvujaRhhoajhmTECA5ms08bRD8IUq2E/xJ1e//B8S6q6PYn/C4pk62TZL1uDo64dMhnJw=
-  file: dist/app.zip
+  file: build/app.zip
   on:
     tags: true
