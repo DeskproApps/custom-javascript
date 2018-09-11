@@ -31,7 +31,6 @@ class PageHome extends React.PureComponent
    * Invoked immediately before a component is mounted
    */
   componentDidMount() {
-    console.log('ahahaha ', this.props.location.state)
     const { css, html, assets, context } = this.props.location.state;
     const { dpapp } = this.props;
 
