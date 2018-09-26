@@ -1,5 +1,4 @@
-T
-abData
+TabData
 =======
 An object which contains the details of the currently opened ticket. The object contains the following properties:
 
